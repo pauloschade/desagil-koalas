@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class DataFrame {
 	private Map<String, List<Double>> columns;
 
@@ -61,6 +62,11 @@ public class DataFrame {
 			throw new DataFrameException("Column " + label + " is empty!");
 		}
 
+		double s = somaValores(values);
+		return s;
+	}
+
+	public double somaValores(List<Double> values) {
 		double s = 0;
 		for (double value: values) {
 			s += value;
@@ -77,10 +83,11 @@ public class DataFrame {
 			throw new DataFrameException("Column " + label + " is empty!");
 		}
 
-		double s = 0;
-		for (double value: values) {
-			s += value;
-		}
+		return average(values);
+	}
+
+	public double average(List<Double> values) {
+		double s = somaValores(values);
 		return s / values.size();
 	}
 
@@ -93,13 +100,13 @@ public class DataFrame {
 			throw new DataFrameException("Column " + label + " is empty!");
 		}
 
-		double s;
+		return variance(values);
+	}
 
-		s = 0;
-		for (double value: values) {
-			s += value;
-		}
-		double m = s / values.size();
+	public double variance(List<Double> values) {
+		double s;
+		
+		double m = average(values);
 
 		s = 0;
 		for (double value: values) {
@@ -116,20 +123,12 @@ public class DataFrame {
 		if (values.size() == 0) {
 			throw new DataFrameException("Column " + label + " is empty!");
 		}
+		
+		return standardDeviation(values);
+	}
 
-		double s, m;
-
-		s = 0;
-		for (double value: values) {
-			s += value;
-		}
-		m = s / values.size();
-
-		s = 0;
-		for (double value: values) {
-			s += Math.pow(value - m, 2);
-		}
-		m = s / values.size();
+	public double standardDeviation(List<Double> values) {
+		double m = variance(values);
 
 		return Math.sqrt(m);
 	}
